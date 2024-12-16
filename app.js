@@ -10,8 +10,8 @@ const app = express();
 const studyTopicRouter = require("./routes/studyTopics");
 const userRouter = require("./routes/users");
 const mainRouter = require("./routes/index");
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
 app.use("/", mainRouter);
 app.use("/", studyTopicRouter);
