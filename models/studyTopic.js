@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const validator = require("validator");
 
-const clothingItemSchema = new mongoose.Schema({
+const studyTopicSchema = new mongoose.Schema({
   topic: {
     type: String,
     required: true,
@@ -13,13 +13,13 @@ const clothingItemSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 400
+    maxlength: 400,
   },
   studytip: {
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 400
+    maxlength: 400,
   },
 
   owner: {

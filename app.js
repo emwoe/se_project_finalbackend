@@ -1,10 +1,72 @@
-const express = require('express');
-const { PORT = 3001 } = process.env;
+const path = require("path");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const express = require("express");
+dotenv.config({ path: "./.env" });
+const mongoose = require("mongoose");
+const axios = require("axios");
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/studyhelper')
+const studyTopicRouter = require("./routes/studyTopics");
+const userRouter = require("./routes/users");
+const mainRouter = require("./routes/index");
+app.use(express.json());
+app.use(cors());
 
-app.listen(PORT, () => {
-    // if everything works fine, the console will show which port the application is listening to
-    console.log(`App listening at port ${PORT}`);
+app.use("/", mainRouter);
+app.use("/", studyTopicRouter);
+app.use("/", userRouter);
+
+mongoose
+  .connect("mongodb://localhost:27017/studyhelper")
+  .then(() => {
+    console.log("Connected to database!");
   })
+  .catch(console.error);
+
+app.post("/api/query", async (req, res) => {
+  try {
+    const response = await axios.post(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a helpful assistant who provides throughout overviews of topics, with as much detail as possible in 4000 characters or less. Your responses always end with a suggestion for one study activity that would help someone learn this material.",
+          },
+          {
+            role: "user",
+            content: `Please provide an overview of ${req.body.topic}?. Then, suggest 2 study strategies to learn this effectively.`,
+          },
+        ],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const topicResponse = response.data.choices[0].message.content;
+    res.json({ topicResponse });
+  } catch (error) {
+    console.error("Error with OpenAI API:", error.message);
+    res.status(500).json({
+      error: "Failed to fetch response from OpenAI",
+      details: error.message,
+    });
+  }
+});
+
+/*
+app.use((req, res, next) => {
+  res.status(404).send({ message: "Requested resource not found" });
+  next();
+});
+*/
+
+app.listen(process.env.PORT, () =>
+  console.log(`Server running on http://localhost:${process.env.PORT}`)
+);
