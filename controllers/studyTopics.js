@@ -16,10 +16,11 @@ module.exports.getTopics = (req, res) => {
 };
 
 module.exports.createNewTopic = (req, res) => {
-  const { topic, topicResponse } = req.body;
+  const { topic, topicResponse, _id } = req.body;
+  console.log(req.user);
 
   studyTopic
-    .create({ topic, topicResponse, owner: req.user._id })
+    .create({ topic: topic, topicResponse: topicResponse, owner: _id })
     .then((item) => res.status(201).send({ data: item }))
     .catch((err) => {
       console.log(err);
