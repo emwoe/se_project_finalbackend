@@ -5,23 +5,16 @@ const validator = require("validator");
 const studyTopicSchema = new mongoose.Schema({
   topic: {
     type: String,
+    /*
     required: true,
     minlength: 2,
     maxlength: 100,
+    */
   },
-  summary: {
+  topicResponse: {
     type: String,
     required: true,
-    minlength: 2,
-    maxlength: 400,
   },
-  studytip: {
-    type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 400,
-  },
-
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
@@ -34,4 +27,4 @@ const studyTopicSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("studyTopic", studyTopic);
+module.exports = mongoose.model("studyTopic", studyTopicSchema);

@@ -34,7 +34,7 @@ app.post("/api/query", async (req, res) => {
           {
             role: "system",
             content:
-              "You are a helpful assistant who provides throughout overviews of topics, with as much detail as possible in 4000 characters or less. Your responses always end with a suggestion for one study activity that would help someone learn this material.",
+              "You are a helpful professor who provides thorough overviews of topics with as much detail as possible in 4000 characters or less, including at least one study strategy to learn the material.",
           },
           {
             role: "user",

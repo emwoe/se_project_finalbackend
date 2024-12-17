@@ -11,13 +11,8 @@ const auth = require("../middleware/auth");
 
 router.use(cors());
 
-/*
+router.get("/topics", getTopics);
+router.post("/topics", createNewTopic);
+router.delete("/topics/:id", deleteTopic);
 
-router.get("/topics", auth, getTopics);
-
-
-router.post("/topics", auth, createNewTopic);
-
-router.delete("/topics/:id", auth, deleteTopic);
-*/
 module.exports = router;

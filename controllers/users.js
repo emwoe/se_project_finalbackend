@@ -28,8 +28,10 @@ module.exports.createUser = (req, res, next) => {
         password: hash,
       })
     )
-    .then(
-      () => res.status(201).send({ username, email }) // no return
+    .then((user) =>
+      res
+        .status(201)
+        .send({ username: user.username, email: user.email, _id: user._id })
     )
     .catch((err) => {
       console.error();
@@ -55,10 +57,13 @@ module.exports.login = (req, res, next) => {
       const usertoken = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
+      console.log(usertoken);
       const userdata = {
         username: user.username,
         email: user.email,
+        _id: user._id,
       };
+      console.log(userdata);
 
       res.send({ userdata, usertoken });
     })
@@ -73,7 +78,7 @@ module.exports.login = (req, res, next) => {
 
 module.exports.getCurrentUser = (req, res, next) => {
   console.log("Current user is");
-  console.log(req.user, req.user._id);
+  console.log(req.params);
   User.findById(req.user._id)
     .orFail(() => {
       throw new NotFoundError("User ID not found.");
