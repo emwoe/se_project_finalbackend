@@ -5,16 +5,15 @@ const validator = require("validator");
 const studyTopicSchema = new mongoose.Schema({
   topic: {
     type: String,
-    /*
     required: true,
     minlength: 2,
     maxlength: 100,
-    */
   },
   topicResponse: {
     type: String,
     required: true,
   },
+
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",

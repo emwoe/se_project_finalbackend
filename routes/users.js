@@ -27,6 +27,6 @@ const testAuth = (req, res, next) => {
   next();
 };
 
-router.get("/users/me", testAuth, getCurrentUser);
+router.get("/users/me", auth, getCurrentUser);
 
 module.exports = router;

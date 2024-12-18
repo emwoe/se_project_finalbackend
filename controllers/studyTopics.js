@@ -17,7 +17,8 @@ module.exports.getTopics = (req, res) => {
 
 module.exports.createNewTopic = (req, res) => {
   const { topic, topicResponse, _id } = req.body;
-  console.log(req.user);
+  console.log("id coming through as");
+  console.log(req.body._id);
 
   studyTopic
     .create({ topic: topic, topicResponse: topicResponse, owner: _id })
