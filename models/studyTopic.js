@@ -13,6 +13,10 @@ const studyTopicSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  studyTips: {
+    type: String,
+    required: true,
+  },
 
   owner: {
     type: mongoose.Schema.Types.ObjectId,

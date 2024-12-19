@@ -34,11 +34,11 @@ app.post("/api/query", async (req, res) => {
           {
             role: "system",
             content:
-              "You are a helpful professor who provides thorough overviews of topics with as much detail as possible in 4000 characters or less, including at least one study strategy to learn the material.",
+              "You are a subject matter export who provides thorough summaries or explanations of topics, including two study strategies to help learn the material effectively. Your responses should focus on critical concepts, events, theories or historical figures and avoid flowery language. Please format your response as a JSON object with the following keys: 'topic', 'topicInformation', 'studyTips'. 'topicInformation' should provide a level of detail appropriate for an encyclopedia entry of 300 to 400 words. Every key's value must be a single string. The study tips should include instructions. For example, if the study tips include making flashcards, please include as key phrases, events or people to include.",
           },
           {
             role: "user",
-            content: `Please provide an overview of ${req.body.topic}?. Then, suggest 2 study strategies to learn this effectively.`,
+            content: `Please provide information on ${req.body.topic} and suggest 2 study strategies to learn about this effectively.`,
           },
         ],
       },
@@ -50,7 +50,19 @@ app.post("/api/query", async (req, res) => {
       }
     );
     const topicResponse = response.data.choices[0].message.content;
-    res.json({ topicResponse });
+    let structuredResponse;
+    try {
+      structuredResponse = JSON.parse(topicResponse);
+    } catch (error) {
+      console.error("Error parsing response:", error.message);
+      return res.status(500).json({
+        error:
+          "Failed to parse the response from OpenAI. Please check the response format.",
+        details: error.message,
+      });
+    }
+
+    res.json(structuredResponse);
   } catch (error) {
     console.error("Error with OpenAI API:", error.message);
     res.status(500).json({

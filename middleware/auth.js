@@ -16,26 +16,10 @@ module.exports = (req, res, next) => {
     if (err) {
       return next(new UnauthorizedError("Invalid token"));
     }
-    req.user = decoded; // this will include _id from the token payload
+    req.user = decoded;
     console.log("Decoded token:", decoded);
 
     next();
   });
 
-  /*
-  const token = authorization.replace("Bearer ", "");
-
-  let payload;
-
-  try {
-    payload = jwt.verify(token, JWT_SECRET);
-  } catch (err) {
-    next(new UnauthorizedError("Authorization required."));
-  }
-
-  req.user = payload;
-
-  return next();
-
-  */
 };

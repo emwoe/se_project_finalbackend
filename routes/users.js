@@ -7,6 +7,7 @@ const auth = require("../middleware/auth");
 
 const UnauthorizedError = require("../errors/unauthorized-error");
 
+/*
 const testAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
@@ -26,6 +27,7 @@ const testAuth = (req, res, next) => {
 
   next();
 };
+*/
 
 router.get("/users/me", auth, getCurrentUser);
 

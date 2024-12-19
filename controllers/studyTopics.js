@@ -16,12 +16,15 @@ module.exports.getTopics = (req, res) => {
 };
 
 module.exports.createNewTopic = (req, res) => {
-  const { topic, topicResponse, _id } = req.body;
-  console.log("id coming through as");
-  console.log(req.body._id);
+  const { topic, topicResponse, studyTips, _id } = req.body;
 
   studyTopic
-    .create({ topic: topic, topicResponse: topicResponse, owner: _id })
+    .create({
+      topic: topic,
+      topicResponse: topicResponse,
+      studyTips: studyTips,
+      owner: _id,
+    })
     .then((item) => res.status(201).send({ data: item }))
     .catch((err) => {
       console.log(err);
@@ -35,8 +38,6 @@ module.exports.createNewTopic = (req, res) => {
     });
 };
 
-//  TO DO: add individual buttons to delete individual topics
-
 module.exports.deleteTopic = (req, res, next) => {
   console.log(req.params.id);
   studyTopic
@@ -46,9 +47,6 @@ module.exports.deleteTopic = (req, res, next) => {
     })
     .then((item) => {
       const ownerId = item.owner.toString();
-      if (ownerId !== req.user._id) {
-        throw new ForbiddenError("You are not the owner of this item.");
-      }
       return studyTopic
         .findByIdAndRemove(req.params.id)
 
