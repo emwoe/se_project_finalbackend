@@ -17,7 +17,11 @@ const studyTopicSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
+  color: {
+    type: String,
+    required: true,
+    enum: ["blue", "green", "yellow", "red", "orange"],
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",

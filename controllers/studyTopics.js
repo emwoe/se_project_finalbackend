@@ -16,7 +16,7 @@ module.exports.getTopics = (req, res) => {
 };
 
 module.exports.createNewTopic = (req, res) => {
-  const { topic, topicResponse, studyTips, _id } = req.body;
+  const { topic, topicResponse, studyTips, _id, color } = req.body;
 
   studyTopic
     .create({
@@ -24,6 +24,7 @@ module.exports.createNewTopic = (req, res) => {
       topicResponse: topicResponse,
       studyTips: studyTips,
       owner: _id,
+      color: color,
     })
     .then((item) => res.status(201).send({ data: item }))
     .catch((err) => {
