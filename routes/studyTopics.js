@@ -9,10 +9,12 @@ const {
 
 const auth = require("../middleware/auth");
 
+const { validateTopicBody } = require("../middleware/validation");
+
 router.use(cors());
 
 router.get("/topics", auth, getTopics);
-router.post("/topics", auth, createNewTopic);
+router.post("/topics", auth, validateTopicBody, createNewTopic);
 router.delete("/topics/:id", auth, deleteTopic);
 
 module.exports = router;

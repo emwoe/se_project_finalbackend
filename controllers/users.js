@@ -28,10 +28,26 @@ module.exports.createUser = (req, res, next) => {
         password: hash,
       })
     )
-    .then((user) =>
-      res
+    .then(
+      (user) => {
+        const usertoken = jwt.sign({ _id: user._id }, JWT_SECRET, {
+          expiresIn: "7d",
+        });
+        console.log(usertoken);
+        const userdata = {
+          username: user.username,
+          email: user.email,
+          _id: user._id,
+        };
+        console.log(userdata);
+
+        res.status(201).send({ userdata, usertoken });
+      }
+      /*
+    res
         .status(201)
         .send({ username: user.username, email: user.email, _id: user._id })
+        */
     )
     .catch((err) => {
       console.error();
