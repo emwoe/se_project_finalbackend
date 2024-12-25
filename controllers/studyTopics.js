@@ -3,7 +3,7 @@ const studyTopic = require("../models/studyTopic");
 const NotFoundError = require("../errors/not-found-error");
 const BadRequestError = require("../errors/bad-request-error");
 
-module.exports.getTopics = (req, res) => {
+module.exports.getTopics = (req, res, next) => {
   studyTopic
     .find({})
     .then((items) => res.send({ data: items }))
@@ -12,17 +12,11 @@ module.exports.getTopics = (req, res) => {
     });
 };
 
-module.exports.createNewTopic = (req, res) => {
+module.exports.createNewTopic = (req, res, next) => {
   const { topic, topicResponse, studyTips, _id, color } = req.body;
 
   studyTopic
-    .create({
-      topic: topic,
-      topicResponse: topicResponse,
-      studyTips: studyTips,
-      owner: _id,
-      color: color,
-    })
+    .create({ topic, topicResponse, studyTips, owner: _id, color })
     .then((item) => res.status(201).send({ data: item }))
     .catch((err) => {
       console.log(err);
@@ -37,19 +31,16 @@ module.exports.createNewTopic = (req, res) => {
 };
 
 module.exports.deleteTopic = (req, res, next) => {
-  console.log(req.params.id);
   studyTopic
     .findById(req.params.id)
     .orFail(() => {
       throw new NotFoundError("Item ID not found.");
     })
-    .then((item) => {
-      const ownerId = item.owner.toString();
-      return studyTopic
+    .then((item) =>
+      studyTopic
         .findByIdAndRemove(req.params.id)
-
-        .then(() => res.send({ data: item }));
-    })
+        .then(() => res.send({ data: item }))
+    )
     .catch((err) => {
       console.log("error type is:");
       console.log(err.name);

@@ -1,10 +1,9 @@
-const path = require("path");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const express = require("express");
-dotenv.config({ path: "./.env" });
 const mongoose = require("mongoose");
 const axios = require("axios");
+
 const app = express();
 
 const studyTopicRouter = require("./routes/studyTopics");
@@ -14,8 +13,18 @@ const errorHandler = require("./middleware/error-handler");
 const NotFoundError = require("./errors/not-found-error");
 const { requestLogger, errorLogger } = require("./middleware/logger");
 
+dotenv.config({ path: "./.env" });
+
 app.use(cors());
 app.use(express.json());
+
+app.use(requestLogger);
+
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
 
 app.use("/", mainRouter);
 app.use("/", studyTopicRouter);
@@ -65,11 +74,17 @@ app.post("/api/query", async (req, res) => {
         details: error.message,
       });
     }
+    if (!structuredResponse || typeof structuredResponse !== "object") {
+      return res.status(500).json({
+        error: "Invalid data structure from OpenAI response.",
+        details: "The response did not contain the expected structure.",
+      });
+    }
 
-    res.json(structuredResponse);
+    return res.json(structuredResponse);
   } catch (error) {
     console.error("Error with OpenAI API:", error.message);
-    res.status(500).json({
+    return res.status(500).json({
       error: "Failed to fetch response from OpenAI",
       details: error.message,
     });

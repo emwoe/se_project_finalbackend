@@ -8,18 +8,14 @@ module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    throw new UnauthorizedError("Authorization required.");
+    return next(new UnauthorizedError("Authorization required"));
   }
 
   const token = authorization.split(" ")[1];
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+  return jwt.verify(token, JWT_SECRET, (err) => {
     if (err) {
       return next(new UnauthorizedError("Invalid token"));
     }
-    req.user = decoded;
-    console.log("Decoded token:", decoded);
-
-    next();
+    return next();
   });
-
 };

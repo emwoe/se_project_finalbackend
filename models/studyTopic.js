@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-const validator = require("validator");
-
 const studyTopicSchema = new mongoose.Schema({
   topic: {
     type: String,

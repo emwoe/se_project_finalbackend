@@ -10,7 +10,7 @@ const BadRequestError = require("../errors/bad-request-error");
 const NotFoundError = require("../errors/not-found-error");
 
 module.exports.createUser = (req, res, next) => {
-  const { username, email, password, passwordcheck } = req.body;
+  const { username, email, password } = req.body;
   if (!email) {
     throw new BadRequestError("Email is required");
   }
