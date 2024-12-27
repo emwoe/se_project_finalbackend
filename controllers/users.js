@@ -93,6 +93,7 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
+  console.log(req);
   console.log("Current user is");
   console.log(req.user._id);
   User.findById(req.user._id)
