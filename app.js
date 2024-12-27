@@ -13,6 +13,8 @@ const errorHandler = require("./middleware/error-handler");
 const NotFoundError = require("./errors/not-found-error");
 const { requestLogger, errorLogger } = require("./middleware/logger");
 
+const PORT = process.env.PORT || 3001;
+
 dotenv.config({ path: "./.env" });
 
 app.use(cors());
