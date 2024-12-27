@@ -12,8 +12,8 @@ module.exports = (req, res, next) => {
   }
 
   const token = authorization.split(" ")[1];
-  return jwt.verify(token, JWT_SECRET, (err) => {
-    if ((err, decoded)) {
+  return jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
       return next(new UnauthorizedError("Invalid token"));
     }
     req.user = decoded;
