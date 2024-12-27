@@ -105,6 +105,6 @@ app.use(errors());
 
 app.use(errorHandler);
 
-app.listen(process.env.PORT, () =>
-  console.log(`Server running on http://localhost:${process.env.PORT}`)
+app.listen(PORT, () =>
+  console.log(`Server running on http://localhost:${PORT}`)
 );
